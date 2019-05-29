@@ -1,16 +1,7 @@
+import * as angular from 'angular';
+
 angular
   .module("codecraft")
-  .factory("Contact", function($resource) {
-    return $resource(
-      "http://localhost:3000/contacts/:id",
-      {id: "@id"},
-      {
-        update: {
-          method: "PUT"
-        }
-      }
-    );
-  })
   .factory("ContactService", function(Contact, $rootScope, $q, toaster) {
     var self = {
       getPerson: function(email) {
@@ -26,6 +17,7 @@ angular
       hasMore: true,
       isLoading: false,
       isSaving: false,
+      isDeleting: false,
       persons: [],
       search: null,
       sorting: "name",
@@ -85,7 +77,7 @@ angular
       removeContact: function(person) {
         var d = $q.defer();
         self.isDeleting = true;
-        name = person.name;
+        var name = person.name;
         person.$remove().then(function() {
           self.isDeleting = false;
           var index = self.persons.indexOf(person);
