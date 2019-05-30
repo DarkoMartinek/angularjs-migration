@@ -8,7 +8,7 @@ let PersonListComponent = {
         <div class="row" infinite-scroll="$ctrl.contacts.loadMore()" infinite-scroll-immediate-check="false"
             infinite-scroll-distance="1">
     
-            <cc-card ng-repeat="person in $ctrl.contacts.persons" user="person">
+            <cc-card ng-repeat="person in $ctrl.contacts.persons track by person.id" user="person">
             </cc-card>
     
         </div>

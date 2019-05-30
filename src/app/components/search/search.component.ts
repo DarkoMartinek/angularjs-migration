@@ -1,11 +1,13 @@
 import * as angular from 'angular';
 
-import { Component, Inject } from '@angular/core';
-import { ContactService } from 'src/app/services/contact.service';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/do';
 
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { formControlBinding } from '@angular/forms/src/directives/reactive_directives/form_control_directive';
 import { downgradeComponent } from '@angular/upgrade/static';
+import { ContactService } from '../../services/contact.service';
 
 @Component({
     selector: 'search',
@@ -29,10 +31,11 @@ import { downgradeComponent } from '@angular/upgrade/static';
                 <option value="DESC">DESC</option>
             </select>
         </div>
+
     </form>
     `
 })
-export class SearchComponent {
+export class SearchComponent implements OnInit{
     protected myForm: FormGroup;
 
     constructor(
@@ -44,10 +47,24 @@ export class SearchComponent {
             ordering: new FormControl('ASC'),
         })
     }
+
+    ngOnInit() {
+        this.myForm
+        .valueChanges
+        .debounceTime(400)
+        .distinctUntilChanged()
+        .do(console.log)
+        .subscribe(({sorting, ordering, search})=>{
+            this.contacts.sorting= sorting;
+            this.contacts.ordering = ordering;
+            this.contacts.search = search;
+            this.contacts.doSearch();
+        });
+    }
 }
 
 angular
     .module("codecraft")
-    .directve('search', downgradeComponent({
+    .directive('search', downgradeComponent({
         component: SearchComponent
     }));
