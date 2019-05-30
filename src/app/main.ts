@@ -1,16 +1,43 @@
-import 'angular';
-import 'angular-resource';
-import 'angular-animate';
-import 'ng-infinite-scroll';
-import 'angular-spinner';
-import 'angular-auto-validate/dist/jcs-auto-validate';
-import 'angular-ladda';
-import 'angular-strap';
-import 'angularjs-toaster';
-import 'angular-ui-router';
+import "angular";
+import "angular-animate";
+import "angular-auto-validate/dist/jcs-auto-validate";
+import "angular-ladda";
+import "angular-resource";
+import "angular-spinner";
+import "angular-strap";
+import "angular-ui-router";
+import "angularjs-toaster";
+import "ng-infinite-scroll";
 
-import './app.main';
-import './services';
-import './components';
-import './filters';
-import './app.routes';
+import "./app.main";
+import "./app.routes";
+import "./components";
+import "./filters";
+import "./services";
+
+import "./polyfills";
+
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
+import { UpgradeModule } from "@angular/upgrade/static";
+
+@NgModule({
+    imports: [
+        BrowserModule,
+        UpgradeModule,
+    ],
+})
+export class AppModule {
+    // override Angular bootstrap so it doesn't do anything
+    public ngDoBootstrap(): void { }
+}
+
+// bootstrap using UpgradeModule
+platformBrowserDynamic()
+    .bootstrapModule(AppModule)
+    .then((platformRef)  => {
+        console.log("Bootstraping in Hybrid mode with Angular & AngularJS");
+        const upgrade: UpgradeModule = platformRef.injector.get(UpgradeModule) as UpgradeModule;
+        upgrade.bootstrap(document.body, ["codecraft"]);
+    });
