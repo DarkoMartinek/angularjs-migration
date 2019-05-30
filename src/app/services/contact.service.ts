@@ -11,14 +11,14 @@ export class ContactService {
   private isDeleting = false;
   private selectedPerson = null;
   private persons = [];
-  private search = null;
+  private search = '';
   private sorting = 'name';
   private ordering = 'ASC';
 
   constructor(Contact, toaster) {
     this.Contact = Contact;
     this.toaster = toaster;
-    
+
     this.loadContacts();
   }
 
@@ -59,11 +59,11 @@ export class ContactService {
       this.Contact.query(params)
         .then((res) => {
           console.debug(res);
-          for (const person of res.data) {
+          for (const person of res) {
             this.persons.push(person);
           }
 
-          if (!res.data) {
+          if (res.length === 0) {
             this.hasMore = false;
           }
           this.isLoading = false;
@@ -108,15 +108,15 @@ export class ContactService {
     return new Promise((resolve, reject) => {
       this.isSaving = true;
       this.Contact.save(person)
-      .then(() => {
-        this.isSaving = false;
-        this.hasMore = true;
-        this.page = 1;
-        this.persons = [];
-        this.loadContacts();
-        this.toaster.pop('success', 'Created' + person.name);
-        resolve();
-      });
+        .then(() => {
+          this.isSaving = false;
+          this.hasMore = true;
+          this.page = 1;
+          this.persons = [];
+          this.loadContacts();
+          this.toaster.pop('success', 'Created' + person.name);
+          resolve();
+        });
     })
   }
 }

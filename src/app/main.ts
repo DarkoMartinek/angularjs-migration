@@ -16,8 +16,9 @@ import './filters';
 import './services';
 
 import './polyfills';
+import 'core-js/es7/reflect';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
@@ -37,7 +38,7 @@ import { Contact } from './services/contact.resource';
 export class AppModule {
     // override Angular bootstrap so it doesn't do anything
     public ngDoBootstrap(): void { }
-}
+} 
 
 // bootstrap using UpgradeModule
 platformBrowserDynamic()

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { downgradeInjectable } from '@angular/upgrade/static';
 import * as angular from 'angular';
 

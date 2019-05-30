@@ -4,12 +4,12 @@ const webpack = require('webpack');
 module.exports = {
     entry: './src/app/main.ts',
     output: {
-        filename: '../src/dist/bundle.js'
+        filename: 'src/dist/bundle.js'
     },
     resolve: {
         extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js']
     },
-    mode: 'development',
+    // mode: 'development',
     module: {
         rules: [
             { test: /\.tsx?$/, loader: 'ts-loader' }
