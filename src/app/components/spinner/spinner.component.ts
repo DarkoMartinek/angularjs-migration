@@ -1,28 +1,47 @@
-import * as angular from 'angular';
+// import * as angular from 'angular';
 
-let spinnerComponent = {
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  ViewChild
+} from '@angular/core';
+// import { downgradeComponent } from '@angular/upgrade/static';
+
+import { Spinner } from 'spin.js';
+
+@Component({
   selector: 'ccSpinner',
   template: `
-    <div class="spinner"
-      ng-show="$ctrl.isLoading">
-    <span us-spinner="{radius:8, width:5, length: 3, lines:9}"></span>
+    <div  [hidden]="!isLoading" class="spinner">
+    <span #spinnerEl></span>
 
-    <p>{{ $ctrl.message }}</p>
+    <p>{{ message }}</p>
     </div>
   `,
-  bindings: {
-    isLoading: "=",
-    message: "@"
-  },
-  controller: class SpinnerController {
-    public isLoading;
-    public message;
+})
+export class SpinnerComponent implements AfterViewInit {
+  @Input() public isLoading: boolean;
+  @Input() public message: string;
 
-    constructor() {}
+  @ViewChild('spinnerEl')
+  private spinnerEl: ElementRef;
+
+  public ngAfterViewInit() {
+    const spinner = new Spinner({
+      length: 3,
+      lines: 9,
+      radius: 8,
+      width: 5,
+    });
+    spinner.spin(this.spinnerEl.nativeElement);
   }
 }
 
-angular
-  .module("codecraft")
-  .component(spinnerComponent.selector, spinnerComponent);
-  
+// angular
+//   .module('codecraft')
+//   .directive('ccSpinner', downgradeComponent({
+//     component: SpinnerComponent,
+//     inputs: ['isLoading', 'message'],
+//   }));

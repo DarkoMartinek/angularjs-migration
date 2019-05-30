@@ -13,24 +13,51 @@ import './app.main';
 import './app.routes';
 import './components';
 import './filters';
+import './pipes';
 import './services';
 
 import './polyfills';
 
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { UpgradeModule } from '@angular/upgrade/static';
+
+import { InfiniteScrollModule } from 'angular2-infinite-scroll';
+import { LaddaModule } from 'angular2-ladda';
+
+import { CardComponent } from './components/card/card.component';
+import { PersonCreateComponent } from './components/person-create/person-create.component';
+import { PersonListComponent } from './components/person-list/person-list.component';
+import { SearchComponent } from './components/search/search.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
+import { DefaultImagePipe } from './pipes/default-image.pipe';
 import { Contact } from './services/contact.resource';
 import { ContactService } from './services/contact.service';
-import { toasterServiceProvider } from './ajs-upgraded-providers';
-import { SearchComponent } from './components/search/search.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import {
+    toasterServiceProvider,
+    uiRouterStateProvider,
+} from './ajs-upgraded-providers';
 
 @NgModule({
     declarations: [
         SearchComponent,
+        CardComponent,
+        DefaultImagePipe,
+        CardComponent,
+        SpinnerComponent,
+        PersonListComponent,
+        PersonCreateComponent,
+    ],
+    entryComponents: [
+        SearchComponent,
+        // CardComponent,
+        // SpinnerComponent,
+        PersonListComponent,
+        PersonCreateComponent,
     ],
     imports: [
         BrowserModule,
@@ -38,15 +65,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         HttpClientModule,
         FormsModule,
         ReactiveFormsModule,
+        LaddaModule,
+        InfiniteScrollModule,
     ],
     providers: [
         Contact,
         ContactService,
         toasterServiceProvider,
+        uiRouterStateProvider,
     ],
-    entryComponents: [
-        SearchComponent,
-    ]
 })
 export class AppModule {
     // override Angular bootstrap so it doesn't do anything

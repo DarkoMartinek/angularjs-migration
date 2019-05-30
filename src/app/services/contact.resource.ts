@@ -8,8 +8,8 @@ export class Contact {
     @Inject(HttpClient) private http: HttpClient,
   ) { }
 
-  public query(params: { [key: string]: string }): Promise<Array<any>> {
-    return this.http.get<Array<any>>(this.apiRoot, { params }).toPromise();
+  public query(params: { [key: string]: string }): Promise<any[]> {
+    return this.http.get<any[]>(this.apiRoot, { params }).toPromise();
   }
 
   public get(id, params?: { [key: string]: string }) {
