@@ -29,8 +29,9 @@ import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { LaddaModule } from 'angular2-ladda';
 
 import { CardComponent } from './components/card/card.component';
-import { PersonCreateComponent } from './components/person-create/person-create.component';
 import { PersonListComponent } from './components/person-list/person-list.component';
+import { PersonCreateComponent } from './components/person/person-create/person-create.component';
+import { PersonEditComponent } from './components/person/person-edit/person-edit.component';
 import { SearchComponent } from './components/search/search.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { DefaultImagePipe } from './pipes/default-image.pipe';
@@ -39,6 +40,7 @@ import { ContactService } from './services/contact.service';
 
 import {
     toasterServiceProvider,
+    uiRouterStateParamsProvider,
     uiRouterStateProvider,
 } from './ajs-upgraded-providers';
 
@@ -51,6 +53,7 @@ import {
         SpinnerComponent,
         PersonListComponent,
         PersonCreateComponent,
+        PersonEditComponent,
     ],
     entryComponents: [
         SearchComponent,
@@ -58,6 +61,7 @@ import {
         // SpinnerComponent,
         PersonListComponent,
         PersonCreateComponent,
+        PersonEditComponent,
     ],
     imports: [
         BrowserModule,
@@ -73,6 +77,7 @@ import {
         ContactService,
         toasterServiceProvider,
         uiRouterStateProvider,
+        uiRouterStateParamsProvider,
     ],
 })
 export class AppModule {

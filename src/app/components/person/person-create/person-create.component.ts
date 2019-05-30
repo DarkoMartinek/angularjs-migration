@@ -3,13 +3,13 @@ import * as angular from 'angular';
 import { Component, Inject } from '@angular/core';
 import { downgradeComponent } from '@angular/upgrade/static';
 
-import { ContactService } from '../../services/contact.service';
+import { ContactService } from '../../../services/contact.service';
 
-import { UIRouterState } from '../../ajs-upgraded-providers';
+import { UIRouterState } from '../../../ajs-upgraded-providers';
 
 @Component({
     selector: 'personCreate',
-    templateUrl: 'app/components/person-create/person-form.html',
+    templateUrl: 'app/components/person/person-form.html',
 })
 export class PersonCreateComponent {
     public person = {};
