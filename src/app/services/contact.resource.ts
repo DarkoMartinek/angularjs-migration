@@ -1,34 +1,36 @@
+import { HttpClient } from '@angular/common/http';
+import { Inject } from '@angular/core';
+import { downgradeInjectable } from '@angular/upgrade/static';
 import * as angular from 'angular';
 
 export class Contact {
-  private apiRoot: string = "http://localhost:3000/contacts";
-  private $http;
+  private apiRoot: string = 'http://localhost:3000/contacts';
 
-  constructor($http) {
-    this.$http = $http;
+  constructor(
+    @Inject(HttpClient) private http: HttpClient,
+  ) { }
+
+  public query(params: { string: string }) {
+    return this.http.get(this.apiRoot, { params }).toPromise();
   }
 
-  query(params: { string: string }) {
-    return this.$http.get(this.apiRoot, { params });
+  public get(id, params?: { string: string }) {
+    return this.http.get(this.apiRoot + '/' + id, { params }).toPromise();
   }
 
-  get(id, params?: { string: string }) {
-    return this.$http.get(this.apiRoot + '/' + id, { params });
+  public save(data: any) {
+    return this.http.post(this.apiRoot, data).toPromise();
   }
 
-  save(data: any) {
-    return this.$http.post(this.apiRoot, data);
+  public update(data: any) {
+    return this.http.put(this.apiRoot + '/' + data.id, data).toPromise();
   }
 
-  update(data: any) {
-    return this.$http.put(this.apiRoot + '/' + data.id, data);
-  }
-
-  remove(data: any) {
-    return this.$http.delete(this.apiRoot+'/' + data.id);
+  public remove(data: any) {
+    return this.http.delete(this.apiRoot + '/' + data.id).toPromise();
   }
 }
 
 angular
-  .module("codecraft")
-  .service("Contact", Contact);
+  .module('codecraft')
+  .factory('Contact', downgradeInjectable(Contact));
