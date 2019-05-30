@@ -1,44 +1,53 @@
 import * as angular from 'angular';
 
-let searchComponent = {
+import { Component, Inject } from '@angular/core';
+import { ContactService } from 'src/app/services/contact.service';
+
+import { FormGroup, FormControl } from '@angular/forms';
+import { formControlBinding } from '@angular/forms/src/directives/reactive_directives/form_control_directive';
+import { downgradeComponent } from '@angular/upgrade/static';
+
+@Component({
     selector: 'search',
     template: `
-    <form class="navbar-form navbar-left">
+    <form class="navbar-form navbar-left" [formGroup]="myForm">
     
         <div class="form-group">
-            <input type="text" class="form-control" id="name" ng-model="$ctrl.contacts.search" ng-model-options="{ debounce: 300 }"
-                placeholder="Search name..." ng-change="$ctrl.contacts.doSearch()" />
+            <input type="text" class="form-control" id="name" placeholder="Search name..." formControlName="search" />
         </div>
     
         <div class="form-group">
-            <select class="form-control" ng-model="$ctrl.contacts.sorting" ng-change="$ctrl.contacts.doSearch()">
+            <select class="form-control" formControlName="sorting">
                 <option value="name">Name</option>
                 <option value="email">Email</option>
             </select>
         </div>
     
         <div class="form-group">
-            <select class="form-control" ng-model="$ctrl.contacts.ordering" ng-change="$ctrl.contacts.doSearch()">
+            <select class="form-control" formControlName="ordering">
                 <option value="ASC">ASC</option>
                 <option value="DESC">DESC</option>
             </select>
         </div>
     </form>
-    `,
-    bindings: {},
-    controller: class SearchController {
-        public contacts;
+    `
+})
+export class SearchComponent {
+    protected myForm: FormGroup;
 
-        constructor(ContactService) {
-            this.contacts = ContactService;
-        }
-
-        loadMore() {
-            this.contacts.loadMore();
-        };
+    constructor(
+        @Inject(ContactService) private contacts: ContactService
+    ) {
+        this.myForm = new FormGroup({
+            search: new FormControl(),
+            sorting: new FormControl('name'),
+            ordering: new FormControl('ASC'),
+        })
     }
 }
 
 angular
     .module("codecraft")
-    .component(searchComponent.selector, searchComponent);
+    .directve('search', downgradeComponent({
+        component: SearchComponent
+    }));

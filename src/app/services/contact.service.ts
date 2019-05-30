@@ -1,9 +1,12 @@
 import * as angular from 'angular';
 
-export class ContactService {
-  private Contact;
-  private toaster;
+import { Inject } from '@angular/core';
+import { downgradeInjectable } from '@angular/upgrade/static';
 
+import { Contact } from './contact.resource';
+import { Toaster } from '../ajs-upgraded-providers';
+
+export class ContactService {
   private page = 1;
   private hasMore = true;
   private isLoading = false;
@@ -15,10 +18,10 @@ export class ContactService {
   private sorting = 'name';
   private ordering = 'ASC';
 
-  constructor(Contact, toaster) {
-    this.Contact = Contact;
-    this.toaster = toaster;
-
+  constructor(
+    @Inject(Contact) private contact: Contact,
+    @Inject(Toaster) private toaster
+  ) {
     this.loadContacts();
   }
 
@@ -50,13 +53,13 @@ export class ContactService {
       this.isLoading = true;
 
       let params = {
-        _page: this.page,
+        _page: this.page.toString(),
         _sort: this.sorting,
         _order: this.ordering,
         q: this.search
       };
 
-      this.Contact.query(params)
+      this.contact.query(params)
         .then((res) => {
           console.debug(res);
           for (const person of res) {
@@ -81,7 +84,7 @@ export class ContactService {
   updateContact(person) {
     return new Promise((resolve, reject) => {
       this.isSaving = true;
-      this.Contact.update(person)
+      this.contact.update(person)
         .then(() => {
           this.isSaving = false;
           this.toaster.pop("success", "Updated " + person.name);
@@ -93,7 +96,7 @@ export class ContactService {
   removeContact(person) {
     return new Promise((resolve, reject) => {
       this.isDeleting = true;
-      this.Contact.remove(person)
+      this.contact.remove(person)
         .then(() => {
           const index = this.persons.indexOf(person);
           this.persons.splice(index, 1);
@@ -107,7 +110,7 @@ export class ContactService {
   createContact(person) {
     return new Promise((resolve, reject) => {
       this.isSaving = true;
-      this.Contact.save(person)
+      this.contact.save(person)
         .then(() => {
           this.isSaving = false;
           this.hasMore = true;
@@ -123,4 +126,4 @@ export class ContactService {
 
 angular
   .module("codecraft")
-  .service("ContactService", ContactService);
+  .factory("ContactService", downgradeInjectable(ContactService));
